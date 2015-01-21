@@ -40,10 +40,10 @@
 
 
           data = {{cleanedData|safe}};
-
+          var minValue = d3.min(data, function (d) { return d.value; });
 
           var colorScale = d3.scale.quantile()
-              .domain([0, buckets - 1, d3.max(data, function (d) { return d.value; })])
+              .domain([ minValue,  d3.max(data, function (d) { return d.value; })])
               .range(colors);
 
           var svg = d3.select("#chart").append("svg")
@@ -90,7 +90,7 @@
           heatMap.append("title").text(function(d) { return d.value; });
               
           var legend = svg.selectAll(".legend")
-              .data([0].concat(colorScale.quantiles()), function(d) { return d; })
+              .data([minValue].concat(colorScale.quantiles()), function(d) { return d; })
               .enter().append("g")
               .attr("class", "legend");
 
